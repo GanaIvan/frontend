@@ -1,101 +1,208 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Dashboard Admin</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
-    body {
-      background: #020617;
-      color: white;
-      font-family: system-ui, sans-serif;
-      padding: 20px;
+    :root {
+      --bg: #020617;
+      --card: #020617;
+      --border: #1e293b;
+      --muted: #94a3b8;
+      --accent: #22c55e;
+      --danger: #dc2626;
     }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: white;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    header span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    main {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
     button {
       padding: 10px 16px;
-      border-radius: 6px;
+      border-radius: 8px;
       border: none;
-      background: #dc2626;
-      color: white;
       cursor: pointer;
+      font-size: 14px;
     }
-    button:hover {
-      background: #b91c1c;
+
+    .btn-logout {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .card {
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    tr:hover {
+      background: #020617;
+    }
+
+    td {
+      white-space: nowrap;
+    }
+
+    td.numeros {
+      white-space: normal;
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 20px;
+    }
+
+    @media (max-width: 640px) {
+      header h1 {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <h1>Dashboard Admin</h1>
-  <p>Sesión iniciada correctamente ✅</p>
+<header>
+  <div>
+    <h1>Dashboard Admin</h1>
+    <span>Sesión iniciada correctamente</span>
+  </div>
+  <button id="logout" class="btn-logout">Cerrar sesión</button>
+</header>
 
-  <button id="logout">Cerrar sesión</button>
+<main>
 
-<button id="resetCompras"
-  style="background:#7c2d12; margin-top:10px">
-  Reiniciar compras
-</button>
+  <div class="actions">
+    <button id="resetCompras" class="btn-danger">
+      Reiniciar todas las compras
+    </button>
+  </div>
 
+  <div class="card">
+    <h2>Compras registradas</h2>
 
-<hr style="margin:20px 0">
+    <div class="table-wrapper">
+      <table id="tablaCompras">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Cédula</th>
+            <th>Tickets</th>
+            <th>Referencia</th>
+            <th>Números</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
 
-<h2>Compras registradas</h2>
+</main>
 
-<div style="overflow-x:auto">
-  <table id="tablaCompras" style="width:100%; border-collapse: collapse;">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Teléfono</th>
-        <th>Correo</th>
-        <th>Cédula</th>
-        <th>Tickets</th>
-        <th>Referencia</th>
-        <th>Números</th>
-        <th>Fecha</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
+<footer>
+  Panel administrativo • Ganaconivan
+</footer>
 
-<style>
-  table th, table td {
-    border: 1px solid #334155;
-    padding: 8px;
-    font-size: 14px;
-  }
-  table th {
-    background: #020617;
-  }
-</style>
-
-
-
-
-
-  
-  <!-- Firebase -->
-  <script type="module">
+<!-- AUTH -->
+<script type="module">
   import { auth } from "../firebase.js";
   import { onAuthStateChanged, signOut }
     from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
-  const logoutBtn = document.getElementById("logout");
-
   onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "login.html";
-    }
+    if (!user) window.location.href = "login.html";
   });
 
-  logoutBtn.addEventListener("click", async () => {
+  document.getElementById("logout").addEventListener("click", async () => {
     await signOut(auth);
     window.location.href = "login.html";
   });
 </script>
 
+<!-- FIRESTORE -->
 <script type="module">
   import { db } from "../firebase.js";
   import {
@@ -120,22 +227,20 @@
 
     const snapshot = await getDocs(q);
 
-    snapshot.forEach(docSnap => {
-      const data = docSnap.data();
+    snapshot.forEach(d => {
+      const data = d.data();
 
       const tr = document.createElement("tr");
-
       tr.innerHTML = `
         <td>${data.nombre || "-"}</td>
         <td>${data.telefono || "-"}</td>
-  <td>${data.correo || "-"}</td>
-  <td>${data.cedula || "-"}</td>
+        <td>${data.correo || "-"}</td>
+        <td>${data.cedula || "-"}</td>
         <td>${data.tickets || 0}</td>
         <td>${data.referencia || "-"}</td>
-        <td>${(data.numeros || []).join(", ")}</td>
+        <td class="numeros">${(data.numeros || []).join(", ")}</td>
         <td>${data.fecha?.toDate().toLocaleString() || "-"}</td>
       `;
-
       tbody.appendChild(tr);
     });
   }
@@ -143,28 +248,19 @@
   cargarCompras();
 
   resetBtn.addEventListener("click", async () => {
-    const ok = confirm("⚠️ ¿Seguro que deseas borrar TODAS las compras?");
-    if (!ok) return;
+    if (!confirm("⚠️ Esto borrará TODAS las compras. ¿Continuar?")) return;
 
-    const snapshot = await getDocs(collection(db, "compras"));
-
-    for (const d of snapshot.docs) {
+    const snap = await getDocs(collection(db, "compras"));
+    for (const d of snap.docs) {
       await deleteDoc(doc(db, "compras", d.id));
     }
 
-    alert("✅ Compras borradas");
+    alert("Compras eliminadas");
     cargarCompras();
   });
 </script>
 
-
-
-
-
-  
 </body>
 </html>
-
-
 
 
