@@ -32,6 +32,43 @@
 
   <button id="logout">Cerrar sesión</button>
 
+
+
+<hr style="margin:20px 0">
+
+<h2>Compras registradas</h2>
+
+<div style="overflow-x:auto">
+  <table id="tablaCompras" style="width:100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Tickets</th>
+        <th>Referencia</th>
+        <th>Números</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<style>
+  table th, table td {
+    border: 1px solid #334155;
+    padding: 8px;
+    font-size: 14px;
+  }
+  table th {
+    background: #020617;
+  }
+</style>
+
+
+
+
+
+  
   <!-- Firebase -->
   <script type="module">
   import { auth } from "../firebase.js";
@@ -52,8 +89,49 @@
   });
 </script>
 
+<script type="module">
+  import { db } from "../firebase.js";
+  import {
+    collection,
+    getDocs,
+    query,
+    orderBy
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+  const tbody = document.querySelector("#tablaCompras tbody");
+
+  async function cargarCompras() {
+    tbody.innerHTML = "";
+
+    const q = query(
+      collection(db, "compras"),
+      orderBy("fecha", "desc")
+    );
+
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${data.nombre || "-"}</td>
+        <td>${data.tickets || 0}</td>
+        <td>${data.referencia || "-"}</td>
+        <td>${(data.numeros || []).join(", ")}</td>
+        <td>${data.fecha?.toDate().toLocaleString() || "-"}</td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  cargarCompras();
+</script>
 
   
 </body>
 </html>
+
 
