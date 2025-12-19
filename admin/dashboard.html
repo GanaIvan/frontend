@@ -173,6 +173,10 @@
   </div>
 </div>
 
+<div style="background:#020617; border:1px solid #334155; padding:16px; border-radius:8px">
+  <h3>Total de tickets vendidos</h3>
+  <p id="totalTickets" style="font-size:24px; font-weight:bold">0</p>
+</div>
 
 
   
@@ -234,6 +238,7 @@
 
   const tbody = document.querySelector("#tablaCompras tbody");
   const resetBtn = document.getElementById("resetCompras");
+  const totalTicketsEl = document.getElementById("totalTickets");
 const totalComprasEl = document.getElementById("totalCompras");
 const totalBolivaresEl = document.getElementById("totalBolivares");
   const PRECIO_TICKET = 219; // Bs por ticket
@@ -243,6 +248,7 @@ const totalBolivaresEl = document.getElementById("totalBolivares");
 
 let contadorCompras = 0;
 let totalBolivares = 0;
+let totalTickets = 0;
 
     
     const q = query(
@@ -269,6 +275,7 @@ let totalBolivares = 0;
 
 contadorCompras++;
 totalBolivares += (data.tickets || 0) * PRECIO_TICKET;
+totalTickets += data.tickets || 0;
 
       
       tbody.appendChild(tr);
@@ -277,7 +284,7 @@ totalBolivares += (data.tickets || 0) * PRECIO_TICKET;
 
 totalComprasEl.innerText = contadorCompras;
 totalBolivaresEl.innerText = totalBolivares + " Bs";
-
+totalTicketsEl.innerText = totalTickets;
     
   }
 
@@ -301,6 +308,7 @@ totalBolivaresEl.innerText = totalBolivares + " Bs";
 
 </body>
 </html>
+
 
 
 
