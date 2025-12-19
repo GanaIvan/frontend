@@ -234,10 +234,17 @@
 
   const tbody = document.querySelector("#tablaCompras tbody");
   const resetBtn = document.getElementById("resetCompras");
-
+const totalComprasEl = document.getElementById("totalCompras");
+const totalBolivaresEl = document.getElementById("totalBolivares");
+  const PRECIO_TICKET = 219; // Bs por ticket
   async function cargarCompras() {
     tbody.innerHTML = "";
 
+
+let contadorCompras = 0;
+let totalBolivares = 0;
+
+    
     const q = query(
       collection(db, "compras"),
       orderBy("fecha", "desc")
@@ -259,10 +266,24 @@
         <td class="numeros">${(data.numeros || []).join(", ")}</td>
         <td>${data.fecha?.toDate().toLocaleString() || "-"}</td>
       `;
+
+contadorCompras++;
+totalBolivares += (data.tickets || 0) * PRECIO_TICKET;
+
+      
       tbody.appendChild(tr);
     });
+
+
+totalComprasEl.innerText = contadorCompras;
+totalBolivaresEl.innerText = totalBolivares + " Bs";
+
+    
   }
 
+
+
+  
   cargarCompras();
 
   resetBtn.addEventListener("click", async () => {
@@ -280,6 +301,7 @@
 
 </body>
 </html>
+
 
 
 
