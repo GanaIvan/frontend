@@ -237,7 +237,28 @@ td.numeros{font-size:12px;color:#e5e7eb}
   </section>
 
   <section class="card">
-    <h2>Compras registradas</h2>
+
+
+
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+  <h2 style="margin:0">Compras registradas</h2>
+
+  <button id="resetCompras"
+    style="
+      background:#7c2d12;
+      border:none;
+      color:white;
+      padding:8px 14px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:13px;
+    ">
+    🗑 Reiniciar compras
+  </button>
+</div>
+
+
+    
     <div class="table-wrap">
       <table id="tablaCompras">
         <thead>
@@ -260,86 +281,117 @@ td.numeros{font-size:12px;color:#e5e7eb}
 </main>
 </div>
 
-<!-- AUTH -->
+
 <script type="module">
 import { auth } from "../firebase.js";
 import { onAuthStateChanged, signOut }
-from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
-onAuthStateChanged(auth,user=>{
-  if(!user) location.href="login.html";
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    window.location.href = "login.html";
+  }
 });
 
-document.getElementById("logout").onclick=async()=>{
+document.getElementById("logout")?.addEventListener("click", async () => {
   await signOut(auth);
-  location.href="login.html";
-};
+  window.location.href = "login.html";
+});
 </script>
 
-<!-- FIRESTORE -->
+
+
+
+
+  
 <script type="module">
 import { db } from "../firebase.js";
-import { collection,getDocs,query,orderBy }
-from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  deleteDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-const tbody=document.querySelector("#tablaCompras tbody");
-const totalComprasEl=document.getElementById("totalCompras");
-const totalTicketsEl=document.getElementById("totalTickets");
-const totalBolivaresEl=document.getElementById("totalBolivares");
-const PRECIO_TICKET=219;
+const tbody = document.querySelector("#tablaCompras tbody");
+const totalComprasEl = document.getElementById("totalCompras");
+const totalTicketsEl = document.getElementById("totalTickets");
+const totalBolivaresEl = document.getElementById("totalBolivares");
+const resetBtn = document.getElementById("resetCompras");
 
-async function cargarCompras(){
-  let compras=0,tickets=0,bolivares=0;
-  tbody.innerHTML="";
+const PRECIO_TICKET = 219;
 
-  const q=query(collection(db,"compras"),orderBy("fecha","desc"));
-  const snap=await getDocs(q);
+async function cargarCompras() {
+  let compras = 0, tickets = 0, bolivares = 0;
+  tbody.innerHTML = "";
 
-  snap.forEach(d=>{
-    const data=d.data();
+  const q = query(collection(db, "compras"), orderBy("fecha", "desc"));
+  const snap = await getDocs(q);
+
+  snap.forEach(d => {
+    const data = d.data();
+
     compras++;
-    tickets+=data.tickets||0;
-    bolivares+=(data.tickets||0)*PRECIO_TICKET;
+    tickets += data.tickets || 0;
+    bolivares += (data.tickets || 0) * PRECIO_TICKET;
 
-    const tr=document.createElement("tr");
-    tr.innerHTML=`
-      <td>${data.nombre||"-"}</td>
-      <td>${data.telefono||"-"}</td>
-      <td>${data.correo||"-"}</td>
-      <td>${data.cedula||"-"}</td>
-      <td>${data.tickets||0}</td>
-      <td>${data.referencia||"-"}</td>
-      <td class="numeros">${(data.numeros||[]).join(", ")}</td>
-      <td>${data.fecha?.toDate().toLocaleString()||"-"}</td>
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${data.nombre || "-"}</td>
+      <td>${data.telefono || "-"}</td>
+      <td>${data.correo || "-"}</td>
+      <td>${data.cedula || "-"}</td>
+      <td>${data.tickets || 0}</td>
+      <td>${data.referencia || "-"}</td>
+      <td class="numeros">${(data.numeros || []).join(", ")}</td>
+      <td>${data.fecha?.toDate().toLocaleString() || "-"}</td>
     `;
     tbody.appendChild(tr);
   });
 
-  totalComprasEl.textContent=compras;
-  totalTicketsEl.textContent=tickets;
-  totalBolivaresEl.textContent=bolivares+" Bs";
+  totalComprasEl.textContent = compras;
+  totalTicketsEl.textContent = tickets;
+  totalBolivaresEl.textContent = bolivares + " Bs";
 }
+
 cargarCompras();
+
+/* ===== RESET ===== */
+resetBtn?.addEventListener("click", async () => {
+  const ok = confirm("⚠️ ¿Seguro que deseas borrar TODAS las compras?");
+  if (!ok) return;
+
+  const snap = await getDocs(collection(db, "compras"));
+  for (const d of snap.docs) {
+    await deleteDoc(doc(db, "compras", d.id));
+  }
+
+  alert("✅ Compras reiniciadas");
+  cargarCompras();
+});
 </script>
 
 <script>
-const toggle=document.getElementById("menuToggle");
-const sidebar=document.querySelector(".sidebar");
-const overlay=document.getElementById("overlay");
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("overlay");
 
-toggle.onclick=()=>{
+menuToggle?.addEventListener("click", () => {
   sidebar.classList.add("open");
   overlay.classList.add("show");
-};
+});
 
-overlay.onclick=()=>{
+overlay?.addEventListener("click", () => {
   sidebar.classList.remove("open");
   overlay.classList.remove("show");
-};
+});
 </script>
 
 </body>
 </html>
+
 
 
 
