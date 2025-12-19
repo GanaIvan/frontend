@@ -27,7 +27,7 @@ export async function guardarCompraDesdeHTML() {
     return;
   }
 
-  await addDoc(collection(window.db, "compras"), {
+  await addDoc(collection(db, "compras"), {
     nombre,
     tickets,
     referencia,
@@ -37,4 +37,5 @@ export async function guardarCompraDesdeHTML() {
 
   console.log("✅ Compra guardada en Firestore");
 }
+
 
