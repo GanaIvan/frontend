@@ -1843,7 +1843,13 @@ const finalizar = (e) => {
           element.focus()
         }
     </script>
-    
+    <script type="module">
+  import { guardarCompraDesdeHTML }
+    from "./admin/guardarCompra.module.js";
+
+  window.guardarCompraDesdeHTML = guardarCompraDesdeHTML;
+</script>
+
     
   </body>
 
