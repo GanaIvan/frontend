@@ -47,6 +47,9 @@
     <thead>
       <tr>
         <th>Nombre</th>
+        <th>Teléfono</th>
+        <th>Correo</th>
+        <th>Cédula</th>
         <th>Tickets</th>
         <th>Referencia</th>
         <th>Números</th>
@@ -124,6 +127,9 @@
 
       tr.innerHTML = `
         <td>${data.nombre || "-"}</td>
+        <td>${data.telefono || "-"}</td>
+  <td>${data.correo || "-"}</td>
+  <td>${data.cedula || "-"}</td>
         <td>${data.tickets || 0}</td>
         <td>${data.referencia || "-"}</td>
         <td>${(data.numeros || []).join(", ")}</td>
@@ -158,6 +164,7 @@
   
 </body>
 </html>
+
 
 
 
