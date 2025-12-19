@@ -58,29 +58,33 @@
   </div>
 
   <!-- Firebase -->
-  <script src="../firebase.js"></script>
-
   <script type="module">
-    import { signInWithEmailAndPassword } 
-      from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import { auth } from "../firebase.js";
+  import { signInWithEmailAndPassword }
+    from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
-    const btn = document.getElementById("loginBtn");
-    const errorBox = document.getElementById("error");
+  const btn = document.getElementById("loginBtn");
+  const errorBox = document.getElementById("error");
 
-    btn.addEventListener("click", async () => {
-      errorBox.innerText = "";
+  btn.addEventListener("click", async () => {
+    errorBox.innerText = "";
 
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-      try {
-        await signInWithEmailAndPassword(window.auth, email, password);
-        window.location.href = "dashboard.html";
-      } catch (err) {
-        errorBox.innerText = "Credenciales incorrectas";
-      }
-    });
-  </script>
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = "dashboard.html";
+    } catch (err) {
+      console.error(err);
+      errorBox.innerText = "Credenciales incorrectas";
+    }
+  });
+</script>
+
+
 
 </body>
 </html>
+
+
