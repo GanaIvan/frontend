@@ -48,14 +48,18 @@ const tipoCedula =
 
   await addDoc(collection(db, "compras"), {
     nombre,
-    tickets,
-    referencia,
-    numeros,
+  telefono,
+  correo,
+  cedula: `${tipoCedula}-${cedula}`,
+  tickets,
+  referencia,
+  numeros,
     fecha: serverTimestamp()
   });
 
   console.log("✅ Compra guardada en Firestore");
 }
+
 
 
 
