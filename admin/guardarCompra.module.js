@@ -11,6 +11,25 @@ export async function guardarCompraDesdeHTML() {
   const nombre =
     document.getElementById("nombreComprador")?.value || "";
 
+
+
+const telefono =
+  document.getElementById("tlfComprador")?.value || "";
+
+const correo =
+  document.getElementById("correoComprador")?.value || "";
+
+// opcional pero recomendado
+const cedula =
+  document.getElementById("ciComprador")?.value || "";
+
+const tipoCedula =
+  document.getElementById("enteComprador")?.value || "";
+
+
+
+
+  
   const tickets =
     Number(document.getElementById("ticketsSeleccionados")?.innerText || 0);
 
@@ -37,5 +56,6 @@ export async function guardarCompraDesdeHTML() {
 
   console.log("✅ Compra guardada en Firestore");
 }
+
 
 
