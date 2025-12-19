@@ -32,6 +32,10 @@
 
   <button id="logout">Cerrar sesión</button>
 
+<button id="resetCompras"
+  style="background:#7c2d12; margin-top:10px">
+  Reiniciar compras
+</button>
 
 
 <hr style="margin:20px 0">
@@ -95,10 +99,13 @@
     collection,
     getDocs,
     query,
-    orderBy
+    orderBy,
+    deleteDoc,
+    doc
   } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
   const tbody = document.querySelector("#tablaCompras tbody");
+  const resetBtn = document.getElementById("resetCompras");
 
   async function cargarCompras() {
     tbody.innerHTML = "";
@@ -110,8 +117,8 @@
 
     const snapshot = await getDocs(q);
 
-    snapshot.forEach(doc => {
-      const data = doc.data();
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
 
       const tr = document.createElement("tr");
 
@@ -128,10 +135,29 @@
   }
 
   cargarCompras();
+
+  resetBtn.addEventListener("click", async () => {
+    const ok = confirm("⚠️ ¿Seguro que deseas borrar TODAS las compras?");
+    if (!ok) return;
+
+    const snapshot = await getDocs(collection(db, "compras"));
+
+    for (const d of snapshot.docs) {
+      await deleteDoc(doc(db, "compras", d.id));
+    }
+
+    alert("✅ Compras borradas");
+    cargarCompras();
+  });
 </script>
+
+
+
+
 
   
 </body>
 </html>
+
 
 
