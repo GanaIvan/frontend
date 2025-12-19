@@ -15,9 +15,7 @@
       --danger: #dc2626;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -34,15 +32,8 @@
       border-bottom: 1px solid var(--border);
     }
 
-    header h1 {
-      font-size: 20px;
-      margin: 0;
-    }
-
-    header span {
-      font-size: 13px;
-      color: var(--muted);
-    }
+    header h1 { font-size: 20px; margin: 0; }
+    header span { font-size: 13px; color: var(--muted); }
 
     main {
       padding: 20px;
@@ -53,7 +44,6 @@
     .actions {
       display: flex;
       gap: 12px;
-      flex-wrap: wrap;
       margin-bottom: 20px;
     }
 
@@ -76,6 +66,41 @@
       color: white;
     }
 
+    .btn-danger:hover { opacity: 0.9; }
+
+    /* ===== STATS ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-card span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .stat-card strong {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .stat-card.accent strong {
+      color: var(--accent);
+    }
+
+    /* ===== TABLE ===== */
     .card {
       background: #020617;
       border: 1px solid var(--border);
@@ -88,9 +113,7 @@
       font-size: 18px;
     }
 
-    .table-wrapper {
-      overflow-x: auto;
-    }
+    .table-wrapper { overflow-x: auto; }
 
     table {
       width: 100%;
@@ -98,12 +121,13 @@
       min-width: 900px;
     }
 
+    thead { background: #020617; }
+
     th, td {
       padding: 10px 12px;
       border-bottom: 1px solid var(--border);
       font-size: 13px;
       text-align: left;
-      vertical-align: top;
     }
 
     th {
@@ -111,17 +135,14 @@
       font-weight: 500;
     }
 
-    tr:hover {
-      background: #020617;
-    }
-
-    td {
-      white-space: nowrap;
+    tbody tr:hover {
+      background: rgba(255,255,255,0.03);
     }
 
     td.numeros {
-      white-space: normal;
+      max-width: 260px;
       font-size: 12px;
+      line-height: 1.4;
       color: #e5e7eb;
     }
 
@@ -130,12 +151,6 @@
       color: var(--muted);
       font-size: 12px;
       padding: 20px;
-    }
-
-    @media (max-width: 640px) {
-      header h1 {
-        font-size: 16px;
-      }
     }
   </style>
 </head>
@@ -153,33 +168,26 @@
 <main>
 
   <div class="actions">
-    <button id="resetCompras" class="btn-danger">
-      Reiniciar todas las compras
-    </button>
+    <button id="resetCompras" class="btn-danger">🗑 Reiniciar compras</button>
   </div>
 
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span>Total de compras</span>
+      <strong id="totalCompras">0</strong>
+    </div>
 
+    <div class="stat-card accent">
+      <span>Total vendido (Bs)</span>
+      <strong id="totalBolivares">0 Bs</strong>
+    </div>
 
-
-<div style="margin-top:20px; display:flex; gap:20px; flex-wrap:wrap">
-  <div style="background:#020617; border:1px solid #334155; padding:16px; border-radius:8px">
-    <h3>Total de compras</h3>
-    <p id="totalCompras" style="font-size:24px; font-weight:bold">0</p>
+    <div class="stat-card">
+      <span>Total tickets vendidos</span>
+      <strong id="totalTickets">0</strong>
+    </div>
   </div>
 
-  <div style="background:#020617; border:1px solid #334155; padding:16px; border-radius:8px">
-    <h3>Total vendido (Bs)</h3>
-    <p id="totalBolivares" style="font-size:24px; font-weight:bold">0 Bs</p>
-  </div>
-</div>
-
-<div style="background:#020617; border:1px solid #334155; padding:16px; border-radius:8px">
-  <h3>Total de tickets vendidos</h3>
-  <p id="totalTickets" style="font-size:24px; font-weight:bold">0</p>
-</div>
-
-
-  
   <div class="card">
     <h2>Compras registradas</h2>
 
@@ -238,19 +246,19 @@
 
   const tbody = document.querySelector("#tablaCompras tbody");
   const resetBtn = document.getElementById("resetCompras");
+  const totalComprasEl = document.getElementById("totalCompras");
+  const totalBolivaresEl = document.getElementById("totalBolivares");
   const totalTicketsEl = document.getElementById("totalTickets");
-const totalComprasEl = document.getElementById("totalCompras");
-const totalBolivaresEl = document.getElementById("totalBolivares");
-  const PRECIO_TICKET = 219; // Bs por ticket
+
+  const PRECIO_TICKET = 219;
+
   async function cargarCompras() {
     tbody.innerHTML = "";
 
+    let contadorCompras = 0;
+    let totalBolivares = 0;
+    let totalTickets = 0;
 
-let contadorCompras = 0;
-let totalBolivares = 0;
-let totalTickets = 0;
-
-    
     const q = query(
       collection(db, "compras"),
       orderBy("fecha", "desc")
@@ -260,6 +268,10 @@ let totalTickets = 0;
 
     snapshot.forEach(d => {
       const data = d.data();
+
+      contadorCompras++;
+      totalTickets += data.tickets || 0;
+      totalBolivares += (data.tickets || 0) * PRECIO_TICKET;
 
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -272,25 +284,14 @@ let totalTickets = 0;
         <td class="numeros">${(data.numeros || []).join(", ")}</td>
         <td>${data.fecha?.toDate().toLocaleString() || "-"}</td>
       `;
-
-contadorCompras++;
-totalBolivares += (data.tickets || 0) * PRECIO_TICKET;
-totalTickets += data.tickets || 0;
-
-      
       tbody.appendChild(tr);
     });
 
-
-totalComprasEl.innerText = contadorCompras;
-totalBolivaresEl.innerText = totalBolivares + " Bs";
-totalTicketsEl.innerText = totalTickets;
-    
+    totalComprasEl.innerText = contadorCompras;
+    totalTicketsEl.innerText = totalTickets;
+    totalBolivaresEl.innerText = totalBolivares + " Bs";
   }
 
-
-
-  
   cargarCompras();
 
   resetBtn.addEventListener("click", async () => {
@@ -308,6 +309,8 @@ totalTicketsEl.innerText = totalTickets;
 
 </body>
 </html>
+
+
 
 
 
