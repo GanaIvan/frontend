@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      background: #020617;
+      color: white;
+      font-family: system-ui, sans-serif;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 16px;
+      border-radius: 6px;
+      border: none;
+      background: #dc2626;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Dashboard Admin</h1>
+  <p>Sesión iniciada correctamente ✅</p>
+
+  <button id="logout">Cerrar sesión</button>
+
+  <!-- Firebase -->
+  <script src="../firebase.js"></script>
+
+  <script type="module">
+    import { onAuthStateChanged, signOut }
+      from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+    const logoutBtn = document.getElementById("logout");
+
+    onAuthStateChanged(window.auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      await signOut(window.auth);
+      window.location.href = "login.html";
+    });
+  </script>
+
+</body>
+</html>

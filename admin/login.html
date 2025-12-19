@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      background: #0f172a;
+      color: white;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .box {
+      background: #020617;
+      padding: 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 360px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .error {
+      color: #f87171;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h2>Login Admin</h2>
+
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Contraseña">
+
+    <button id="loginBtn">Entrar</button>
+
+    <div id="error" class="error"></div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="../firebase.js"></script>
+
+  <script type="module">
+    import { signInWithEmailAndPassword } 
+      from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+    const btn = document.getElementById("loginBtn");
+    const errorBox = document.getElementById("error");
+
+    btn.addEventListener("click", async () => {
+      errorBox.innerText = "";
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        await signInWithEmailAndPassword(window.auth, email, password);
+        window.location.href = "dashboard.html";
+      } catch (err) {
+        errorBox.innerText = "Credenciales incorrectas";
+      }
+    });
+  </script>
+
+</body>
+</html>
