@@ -160,6 +160,52 @@
     @media (max-width: 900px) {
       .sidebar { display: none; }
     }
+
+
+
+/* ===== MOBILE ===== */
+.menu-toggle {
+  display: none;
+  font-size: 22px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100vh;
+    width: 240px;
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .content {
+    padding: 16px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+}
+
+
+
+
+
+    
   </style>
 </head>
 
@@ -185,7 +231,11 @@
   <!-- ===== CONTENT ===== -->
   <main class="content">
 
-    <h1>Dashboard</h1>
+   <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px">
+  <button class="menu-toggle" id="menuToggle">☰</button>
+  <h1 style="margin:0">Dashboard</h1>
+</div>
+
 
     <div class="stats">
       <div class="stat">
@@ -290,8 +340,31 @@
   cargarCompras();
 </script>
 
+
+<script>
+  const menuToggle = document.getElementById("menuToggle");
+  const sidebar = document.querySelector(".sidebar");
+
+  menuToggle?.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+  });
+
+  document.addEventListener("click", e => {
+    if (
+      sidebar.classList.contains("open") &&
+      !sidebar.contains(e.target) &&
+      !menuToggle.contains(e.target)
+    ) {
+      sidebar.classList.remove("open");
+    }
+  });
+</script>
+
+
+  
 </body>
 </html>
+
 
 
 
