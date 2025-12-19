@@ -1,3 +1,4 @@
+
 import { db } from "../firebase.js";
 import {
   collection,
@@ -8,6 +9,19 @@ import {
 
 export async function guardarCompraDesdeHTML() {
 
+
+
+console.log("=== DEBUG COMPRA ===");
+  console.log("nombre:", document.getElementById("nombreComprador"));
+  console.log("telefono:", document.getElementById("tlfComprador"));
+  console.log("correo:", document.getElementById("correoComprador"));
+  console.log("cedula:", document.getElementById("ciComprador"));
+  console.log("tipoCedula:", document.getElementById("enteComprador"));
+
+
+
+
+  
   const nombre =
     document.getElementById("nombreComprador")?.value || "";
 
@@ -59,6 +73,7 @@ const tipoCedula =
 
   console.log("✅ Compra guardada en Firestore");
 }
+
 
 
 
