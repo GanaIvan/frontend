@@ -1,8 +1,10 @@
+import { db } from "../firebase.js";
 import {
   collection,
   addDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
 
 export async function guardarCompraDesdeHTML() {
 
@@ -35,3 +37,4 @@ export async function guardarCompraDesdeHTML() {
 
   console.log("✅ Compra guardada en Firestore");
 }
+
