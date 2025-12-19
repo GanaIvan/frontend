@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Admin • Configuración</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<style>
+:root{
+  --bg:#020617;
+  --panel:#020617;
+  --border:#1e293b;
+  --muted:#94a3b8;
+  --accent:#22c55e;
+  --danger:#dc2626;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:#fff;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+/* ===== LAYOUT ===== */
+.layout{
+  display:flex;
+  min-height:100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width:240px;
+  background:var(--panel);
+  border-right:1px solid var(--border);
+  padding:20px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.logo{
+  font-weight:700;
+  text-align:center;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+
+.menu{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.menu a{
+  text-decoration:none;
+  color:#fff;
+  padding:10px 12px;
+  border-radius:8px;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.menu a:hover{background:rgba(255,255,255,.05)}
+.menu a.active{background:rgba(34,197,94,.15);color:var(--accent)}
+
+.sidebar-footer{margin-top:auto}
+
+.logout-btn{
+  width:100%;
+  background:transparent;
+  border:1px solid var(--border);
+  color:#fff;
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* ===== CONTENT ===== */
+.content{
+  flex:1;
+  padding:20px;
+  max-width:1000px;
+  margin:auto;
+}
+
+.header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.menu-toggle{
+  display:none;
+  font-size:22px;
+  background:none;
+  border:none;
+  color:white;
+  cursor:pointer;
+}
+
+/* ===== CARD ===== */
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:20px;
+}
+
+.card h2{
+  margin-top:0;
+}
+
+/* ===== FORM ===== */
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-bottom:16px;
+}
+
+label{
+  font-size:13px;
+  color:var(--muted);
+}
+
+input{
+  background:#020617;
+  border:1px solid var(--border);
+  color:white;
+  padding:10px;
+  border-radius:8px;
+  font-size:14px;
+}
+
+button.save{
+  background:var(--accent);
+  color:#052e16;
+  border:none;
+  padding:10px 16px;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.success{
+  color:#22c55e;
+  font-size:13px;
+  margin-top:10px;
+}
+
+/* ===== OVERLAY ===== */
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:1000;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:900px){
+  .menu-toggle{display:block}
+
+  .sidebar{
+    position:fixed;
+    top:0;
+    left:-260px;
+    height:100vh;
+    z-index:1001;
+    transition:left .3s ease;
+  }
+
+  .sidebar.open{left:0}
+  .overlay.show{display:block}
+
+  .content{
+    padding:16px;
+    max-width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">🎛 Admin Panel</div>
+
+  <nav class="menu">
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a class="active">⚙️ Configuración</a>
+    <a href="../index.html" target="_blank">🌐 Ver sitio</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button id="logout" class="logout-btn">Cerrar sesión</button>
+  </div>
+</aside>
+
+<!-- CONTENT -->
+<main class="content">
+
+  <div class="header">
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <h1 style="margin:0">Configuración</h1>
+  </div>
+
+  <!-- ===== SETTINGS CARD ===== -->
+  <section class="card">
+    <h2>Parámetros generales</h2>
+
+    <div class="form-group">
+      <label>Precio del ticket (Bs)</label>
+      <input type="number" id="precioTicket" min="1" />
+    </div>
+
+    <button class="save" id="guardar">
+      💾 Guardar cambios
+    </button>
+
+    <div class="success" id="msg" style="display:none">
+      ✅ Configuración guardada correctamente
+    </div>
+  </section>
+
+</main>
+</div>
+
+<!-- AUTH -->
+<script type="module">
+import { auth } from "../firebase.js";
+import { onAuthStateChanged, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+onAuthStateChanged(auth, user => {
+  if (!user) window.location.href = "login.html";
+});
+
+document.getElementById("logout")?.addEventListener("click", async () => {
+  await signOut(auth);
+  window.location.href = "login.html";
+});
+</script>
+
+<!-- FIRESTORE SETTINGS -->
+<script type="module">
+import { db } from "../firebase.js";
+import { doc, getDoc, setDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const precioInput = document.getElementById("precioTicket");
+const guardarBtn = document.getElementById("guardar");
+const msg = document.getElementById("msg");
+
+const ref = doc(db, "config", "general");
+
+async function cargarConfig(){
+  const snap = await getDoc(ref);
+  if (snap.exists()) {
+    precioInput.value = snap.data().precioTicket ?? 219;
+  } else {
+    precioInput.value = 219;
+  }
+}
+
+guardarBtn.addEventListener("click", async () => {
+  const precio = Number(precioInput.value);
+  if (!precio || precio <= 0) return alert("Precio inválido");
+
+  await setDoc(ref, { precioTicket: precio });
+  msg.style.display = "block";
+  setTimeout(() => msg.style.display = "none", 3000);
+});
+
+cargarConfig();
+</script>
+
+<!-- MENU MOBILE -->
+<script>
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("overlay");
+
+menuToggle?.addEventListener("click", () => {
+  sidebar.classList.add("open");
+  overlay.classList.add("show");
+});
+
+overlay?.addEventListener("click", () => {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+});
+</script>
+
+</body>
+</html>
