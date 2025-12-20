@@ -544,18 +544,53 @@ src="https://www.facebook.com/tr?id=1140579284160045&amp;ev=PageView&amp;noscrip
     <div class="flex flex-col">
       <div class="flex flex-row w-full gap-4 py-3">
         <span class="label-medium-medium text-color-secondary w-[100px]">Banco</span>
+
+
+<span
+  id="pagoBanco"
+  class="grow label-medium-regular text-color-primary"
+>
+  Cargando...
+</span>
+		  
         <span class="grow label-medium-regular text-color-primary">R4 Banco Microfinanciero (0169)</span>
+
+
+
+		  
       </div>
       <div class="flex flex-row w-full gap-4 py-3">
         <span class="label-medium-medium text-color-secondary w-[100px]">Teléfono</span>
+
+<span
+  id="pagoTelefono"
+  class="grow label-medium-regular text-color-primary"
+>
+  Cargando...
+</span>
+		  
         <span class="grow label-medium-regular text-color-primary">04121330548</span>
+
+
+		  
         <div id="copyPhoneContainer" class="cursor-pointer">
           <i id="copyPhone" class="fa-regular fa-copy text-color-brand"></i>
         </div>
       </div>
       <div class="flex flex-row w-full gap-4 py-3">
         <span class="label-medium-medium text-color-secondary w-[100px]">Cédula</span>
+
+<span
+  id="pagoCedula"
+  class="grow label-medium-regular text-color-primary"
+>
+  Cargando...
+</span>
+		  
         <span id="cedula_cliente" class="grow label-medium-regular text-color-primary">J402569165</span>
+
+
+		  
         <div id="copyCedulaContainer" class="cursor-pointer">
           <i id="copyCedula" class="fa-regular fa-copy text-color-brand"></i>
         </div>
@@ -1915,6 +1950,29 @@ async function cargarConfigGeneral() {
       el.innerText = data.fechaEvento;
     });
   }
+
+
+
+ if (data.pagoBanco) {
+    const banco = document.getElementById("pagoBanco");
+    if (banco) banco.innerText = data.pagoBanco;
+  }
+
+  if (data.pagoTelefono) {
+    const tel = document.getElementById("pagoTelefono");
+    if (tel) tel.innerText = data.pagoTelefono;
+  }
+
+  if (data.pagoCedula) {
+    const ced = document.getElementById("pagoCedula");
+    if (ced) ced.innerText = data.pagoCedula;
+  }
+
+
+
+
+
+	
 }
 
 cargarConfigGeneral();
