@@ -1974,6 +1974,11 @@ async function cargarConfigGeneral() {
   }
 
 
+// IMAGEN HERO
+if (data.imagenHero) {
+  const img = document.getElementById("imagenHero");
+  if (img) img.src = data.imagenHero;
+}
 
 
 
