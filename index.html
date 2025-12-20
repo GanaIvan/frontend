@@ -192,6 +192,12 @@ src="https://www.facebook.com/tr?id=1140579284160045&amp;ev=PageView&amp;noscrip
             <path d="M8 2V6" stroke="var(--color-icon-brand)" stroke-opacity="1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M3 10H21" stroke="var(--color-icon-brand)" stroke-opacity="1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
+
+
+<span class="label-medium-medium text-color-brand fechaEvento">
+  Cargando...
+</span>
+			
           <span class="label-medium-medium text-color-brand">
             14 de Diciembre de 2025
           </span>
@@ -768,6 +774,11 @@ src="https://www.facebook.com/tr?id=1140579284160045&amp;ev=PageView&amp;noscrip
               <path d="M8 2V6" stroke="var(--color-icon-brand)" stroke-opacity="1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M3 10H21" stroke="var(--color-icon-brand)" stroke-opacity="1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
+
+<span class="label-medium-medium text-color-brand fechaEvento">
+  Cargando...
+</span>
+			  
             <span class="label-medium-medium text-color-brand">
               14 de Diciembre de 2025
             </span>
@@ -1903,6 +1914,54 @@ cargarTitulo();
 
 
 
+
+
+
+
+
+
+
+<script type="module">
+import { db } from "./firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+async function cargarConfigGeneral() {
+  const ref = doc(db, "config", "general");
+  const snap = await getDoc(ref);
+
+  if (snap.exists()) {
+    const data = snap.data();
+
+    // TÍTULO (si ya lo tienes, déjalo)
+    if (data.tituloPrincipal) {
+      document.getElementById("tituloPrincipal")?.innerText =
+        data.tituloPrincipal;
+    }
+
+    // FECHA (AQUÍ LO NUEVO)
+    if (data.fechaEvento) {
+      document.querySelectorAll(".fechaEvento").forEach(el => {
+        el.innerText = data.fechaEvento;
+      });
+    }
+  }
+}
+
+cargarConfigGeneral();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+	  
 
 
 	  
