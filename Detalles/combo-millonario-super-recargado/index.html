@@ -341,7 +341,7 @@ src="https://www.facebook.com/tr?id=1140579284160045&amp;ev=PageView&amp;noscrip
     </section>
     <section class="hidden px-5 py-6 mt-6 gap-2 lg:block space-y-[15px] justify-center border-y-[1px] border-color-primary">
       <label class="title-large-medium color-text-primary">Detalles de la rifa</label>
-      <p id="quillEditor1" class="body-large-regular color-text-secondary">🤯COMBO MILLONARIO SUPER RECARGADO 🤯🤑🚙🛻🚘🚗
+      <p id="quillEditor1" class="body-large-regular color-text-secondary combo-descripcion">🤯COMBO MILLONARIO SUPER RECARGADO 🤯🤑🚙🛻🚘🚗
 
 🥇TOYOTA 4RUNNER 2025 0KM +
 5.000$ + MOTO 4 RUEDAS + IPHONE 17 PRO MAX + PS5 (14/12/2025) 10:10 PM 🕙
@@ -2043,15 +2043,11 @@ async function verificaSubmit() {
 
 
 
-<p id="comboDescripcion" class="body-large-regular color-text-secondary">
-  Cargando descripción...
-</p>
-
 
 
 
 		
-      <p id="quillEditor2" class="body-large-regular color-text-secondary">🤯COMBO MILLONARIO SUPER RECARGADO 🤯🤑🚙🛻🚘🚗
+      <p id="quillEditor2" class="body-large-regular color-text-secondary combo-descripcion">🤯COMBO MILLONARIO SUPER RECARGADO 🤯🤑🚙🛻🚘🚗
 
 🥇TOYOTA 4RUNNER 2025 0KM +
 5.000$ + MOTO 4 RUEDAS + IPHONE 17 PRO MAX + PS5 (14/12/2025) 10:10 PM 🕙
@@ -2508,6 +2504,31 @@ cargarConfigCombo();
 
 
 
+<script type="module">
+import { db } from "../../firebase.js";
+import { doc, getDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const descripcionEls = document.querySelectorAll(".combo-descripcion");
+
+async function cargarDescripcionCombo() {
+  if (!descripcionEls.length) return;
+
+  const ref = doc(db, "combos", "combo-millonario");
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) return;
+
+  const data = snap.data();
+  if (!data.descripcion) return;
+
+  descripcionEls.forEach(el => {
+    el.innerText = data.descripcion;
+  });
+}
+
+cargarDescripcionCombo();
+</script>
 
 
 
@@ -2520,6 +2541,7 @@ cargarConfigCombo();
 <!-- Mirrored from ganaconivan.com/Detalles/combo-millonario-super-recargado/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Dec 2025 01:59:14 GMT -->
 
 </html>
+
 
 
 
