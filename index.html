@@ -2019,6 +2019,157 @@ cargarConfigGeneral();
 
 
 
+
+
+
+<!-- ================= WHATSAPP FLOATING CHAT ================= -->
+<style>
+  #wa-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    font-family: system-ui, sans-serif;
+  }
+
+  #wa-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #25d366;
+    color: white;
+    font-size: 30px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,.25);
+  }
+
+  #wa-chat {
+    position: absolute;
+    bottom: 75px;
+    right: 0;
+    width: 320px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    overflow: hidden;
+    transform: scale(0);
+    transform-origin: bottom right;
+    transition: .25s ease;
+  }
+
+  #wa-container.active #wa-chat {
+    transform: scale(1);
+  }
+
+  .wa-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #25d366;
+    color: white;
+    padding: 12px;
+  }
+
+  .wa-header img {
+    width: 34px;
+  }
+
+  .wa-header span {
+    font-size: 12px;
+    opacity: .9;
+  }
+
+  #wa-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .wa-body {
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  .wa-action {
+    display: block;
+    background: #25d366;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  @media (max-width: 480px) {
+    #wa-chat {
+      width: 90vw;
+      right: -10px;
+    }
+  }
+</style>
+
+<div id="wa-container">
+  <div id="wa-chat">
+    <div class="wa-header">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+      <div>
+        <strong>Soporte</strong><br>
+        <span>Responde rápido</span>
+      </div>
+      <button id="wa-close">×</button>
+    </div>
+
+    <div class="wa-body">
+      👋 Hola, ¿en qué podemos ayudarte?
+    </div>
+
+    <a class="wa-action"
+       href="https://wa.me/584268154575?text=Hola%20quiero%20información"
+       target="_blank">
+      Iniciar chat
+    </a>
+  </div>
+
+  <button id="wa-btn">💬</button>
+</div>
+
+<script>
+  const waContainer = document.getElementById('wa-container');
+  const waBtn = document.getElementById('wa-btn');
+  const waClose = document.getElementById('wa-close');
+
+  waBtn.onclick = () => waContainer.classList.toggle('active');
+  waClose.onclick = () => waContainer.classList.remove('active');
+
+  document.addEventListener('click', e => {
+    if (!waContainer.contains(e.target)) {
+      waContainer.classList.remove('active');
+    }
+  });
+</script>
+<!-- =========================================================== -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	  
+
+
+
 	  
 
 
