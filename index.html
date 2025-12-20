@@ -1870,7 +1870,33 @@ if (window.guardarCompraDesdeHTML) {
   window.guardarCompraDesdeHTML = guardarCompraDesdeHTML;
 </script>
 
-    
+
+
+
+
+
+
+<script type="module">
+import { db } from "./firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+async function cargarTitulo() {
+  const ref = doc(db, "config", "homepage");
+  const snap = await getDoc(ref);
+
+  if (snap.exists()) {
+    document.getElementById("tituloPrincipal").innerText =
+      snap.data().tituloPrincipal;
+  }
+}
+
+cargarTitulo();
+</script>
+
+
+
+
+	  
   </body>
 
 <!-- Mirrored from ganaconivan.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Dec 2025 01:59:07 GMT -->
