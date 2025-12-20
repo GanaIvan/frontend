@@ -232,6 +232,30 @@ button.save{
   <label>Fecha del evento</label>
   <input type="text" id="fechaEvento" placeholder="14 de Diciembre de 2025" />
 </div>
+
+
+
+
+<div class="form-group">
+  <label>Banco (Pago Móvil)</label>
+  <input type="text" id="pagoBanco" />
+</div>
+
+<div class="form-group">
+  <label>Teléfono (Pago Móvil)</label>
+  <input type="text" id="pagoTelefono" />
+</div>
+
+<div class="form-group">
+  <label>Cédula (Pago Móvil)</label>
+  <input type="text" id="pagoCedula" />
+</div>
+
+
+
+
+
+
     
     <div class="form-group">
       <label>Precio del ticket (Bs)</label>
@@ -275,6 +299,9 @@ import { doc, getDoc, setDoc }
 const precioInput = document.getElementById("precioTicket");
   const tituloInput = document.getElementById("tituloPrincipal");
   const fechaInput = document.getElementById("fechaEvento");
+const pagoBancoInput = document.getElementById("pagoBanco");
+const pagoTelefonoInput = document.getElementById("pagoTelefono");
+const pagoCedulaInput = document.getElementById("pagoCedula");
 
 
 const guardarBtn = document.getElementById("guardar");
@@ -296,6 +323,9 @@ async function cargarConfig(){
     precioInput.value = data.precioTicket ?? 219;
     tituloInput.value = data.tituloPrincipal ?? "";
     fechaInput.value = data.fechaEvento ?? "";
+    pagoBancoInput.value = data.pagoBanco ?? "";
+pagoTelefonoInput.value = data.pagoTelefono ?? "";
+pagoCedulaInput.value = data.pagoCedula ?? "";
   } else {
     precioInput.value = 219;
     tituloInput.value = "";
@@ -314,6 +344,10 @@ guardarBtn.addEventListener("click", async () => {
   const titulo = tituloInput.value.trim();
   const fecha = fechaInput.value.trim();
 
+  const pagoBanco = pagoBancoInput.value.trim();
+  const pagoTelefono = pagoTelefonoInput.value.trim();
+  const pagoCedula = pagoCedulaInput.value.trim();
+
   if (!precio || precio <= 0) {
     return alert("Precio inválido");
   }
@@ -321,12 +355,16 @@ guardarBtn.addEventListener("click", async () => {
   await setDoc(ref, {
     precioTicket: precio,
     tituloPrincipal: titulo,
-    fechaEvento: fecha
+    fechaEvento: fecha,
+    pagoBanco: pagoBanco,
+    pagoTelefono: pagoTelefono,
+    pagoCedula: pagoCedula
   }, { merge: true });
 
   msg.style.display = "block";
   setTimeout(() => msg.style.display = "none", 3000);
 });
+
 
 
 
