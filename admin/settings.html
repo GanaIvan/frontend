@@ -252,6 +252,15 @@ button.save{
 </div>
 
 
+<div class="form-group">
+  <label>URL de imagen principal</label>
+  <input
+    type="text"
+    id="imagenHero"
+    placeholder="https://tusitio.com/media/uploads/hero.jpg"
+  />
+</div>
+
 
 
 
@@ -302,6 +311,8 @@ const precioInput = document.getElementById("precioTicket");
 const pagoBancoInput = document.getElementById("pagoBanco");
 const pagoTelefonoInput = document.getElementById("pagoTelefono");
 const pagoCedulaInput = document.getElementById("pagoCedula");
+  const imagenHeroInput = document.getElementById("imagenHero");
+
 
 
 const guardarBtn = document.getElementById("guardar");
@@ -326,6 +337,8 @@ async function cargarConfig(){
     pagoBancoInput.value = data.pagoBanco ?? "";
 pagoTelefonoInput.value = data.pagoTelefono ?? "";
 pagoCedulaInput.value = data.pagoCedula ?? "";
+    imagenHeroInput.value = data.imagenHero ?? "";
+
   } else {
     precioInput.value = 219;
     tituloInput.value = "";
@@ -348,6 +361,9 @@ guardarBtn.addEventListener("click", async () => {
   const pagoTelefono = pagoTelefonoInput.value.trim();
   const pagoCedula = pagoCedulaInput.value.trim();
 
+  const imagenHero = imagenHeroInput.value.trim();
+
+
   if (!precio || precio <= 0) {
     return alert("Precio inválido");
   }
@@ -358,7 +374,8 @@ guardarBtn.addEventListener("click", async () => {
     fechaEvento: fecha,
     pagoBanco: pagoBanco,
     pagoTelefono: pagoTelefono,
-    pagoCedula: pagoCedula
+    pagoCedula: pagoCedula,
+    imagenHero: imagenHero
   }, { merge: true });
 
   msg.style.display = "block";
