@@ -1905,26 +1905,25 @@ async function cargarConfigGeneral() {
   const ref = doc(db, "config", "general");
   const snap = await getDoc(ref);
 
-  if (snap.exists()) {
-    const data = snap.data();
+  if (!snap.exists()) return;
 
-    // TÍTULO (si ya lo tienes, déjalo)
-    if (data.tituloPrincipal) {
-      document.getElementById("tituloPrincipal")?.innerText =
-        data.tituloPrincipal;
-    }
+  const data = snap.data();
 
-    // FECHA (AQUÍ LO NUEVO)
-    if (data.fechaEvento) {
-      document.querySelectorAll(".fechaEvento").forEach(el => {
-        el.innerText = data.fechaEvento;
-      });
-    }
+  if (data.tituloPrincipal) {
+    document.getElementById("tituloPrincipal").innerText =
+      data.tituloPrincipal;
+  }
+
+  if (data.fechaEvento) {
+    document.querySelectorAll(".fechaEvento").forEach(el => {
+      el.innerText = data.fechaEvento;
+    });
   }
 }
 
 cargarConfigGeneral();
 </script>
+
 
 
 
