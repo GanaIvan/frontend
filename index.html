@@ -1880,18 +1880,27 @@ if (window.guardarCompraDesdeHTML) {
 import { db } from "./firebase.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-async function cargarTitulo() {
-  const ref = doc(db, "config", "homepage");
-  const snap = await getDoc(ref);
+const titulo = document.getElementById("tituloPrincipal");
 
-  if (snap.exists()) {
-    document.getElementById("tituloPrincipal").innerText =
-      snap.data().tituloPrincipal;
+async function cargarTitulo() {
+  try {
+    const ref = doc(db, "config", "general");
+    const snap = await getDoc(ref);
+
+    if (snap.exists() && snap.data().tituloPrincipal) {
+      titulo.innerText = snap.data().tituloPrincipal;
+    } else {
+      titulo.innerText = "Título no configurado";
+    }
+  } catch (e) {
+    titulo.innerText = "Error al cargar";
+    console.error(e);
   }
 }
 
 cargarTitulo();
 </script>
+
 
 
 
