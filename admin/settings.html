@@ -358,7 +358,11 @@ async function cargarConfig(){
     pagoBancoInput.value = data.pagoBanco ?? "";
 pagoTelefonoInput.value = data.pagoTelefono ?? "";
 pagoCedulaInput.value = data.pagoCedula ?? "";
-    imagenHeroInput.value = data.imagenHero ?? "";
+    if (data.imagenHero) {
+  imagenHeroInput.value = data.imagenHero;
+  actualizarPreview(data.imagenHero);
+}
+
 
   } else {
     precioInput.value = 219;
