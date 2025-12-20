@@ -228,7 +228,10 @@ button.save{
 </div>
 
 
-
+<div class="form-group">
+  <label>Fecha del evento</label>
+  <input type="text" id="fechaEvento" placeholder="14 de Diciembre de 2025" />
+</div>
     
     <div class="form-group">
       <label>Precio del ticket (Bs)</label>
@@ -271,12 +274,19 @@ import { doc, getDoc, setDoc }
 
 const precioInput = document.getElementById("precioTicket");
   const tituloInput = document.getElementById("tituloPrincipal");
+  const fechaInput = document.getElementById("fechaEvento");
+
 
 const guardarBtn = document.getElementById("guardar");
 const msg = document.getElementById("msg");
 
 const ref = doc(db, "config", "general");
 
+
+
+
+
+  
 async function cargarConfig(){
   const snap = await getDoc(ref);
 
@@ -285,16 +295,24 @@ async function cargarConfig(){
 
     precioInput.value = data.precioTicket ?? 219;
     tituloInput.value = data.tituloPrincipal ?? "";
+    fechaInput.value = data.fechaEvento ?? "";
   } else {
     precioInput.value = 219;
     tituloInput.value = "";
+    fechaInput.value = "";
   }
 }
 
 
+
+
+
+  
+
 guardarBtn.addEventListener("click", async () => {
   const precio = Number(precioInput.value);
   const titulo = tituloInput.value.trim();
+  const fecha = fechaInput.value.trim();
 
   if (!precio || precio <= 0) {
     return alert("Precio inválido");
@@ -302,12 +320,18 @@ guardarBtn.addEventListener("click", async () => {
 
   await setDoc(ref, {
     precioTicket: precio,
-    tituloPrincipal: titulo
+    tituloPrincipal: titulo,
+    fechaEvento: fecha
   }, { merge: true });
 
   msg.style.display = "block";
   setTimeout(() => msg.style.display = "none", 3000);
 });
+
+
+
+
+  
 
 
 cargarConfig();
