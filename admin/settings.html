@@ -352,6 +352,9 @@ const pagoBancoInput = document.getElementById("pagoBanco");
 const pagoTelefonoInput = document.getElementById("pagoTelefono");
 const pagoCedulaInput = document.getElementById("pagoCedula");
   const imagenHeroInput = document.getElementById("imagenHero");
+const linkTelegramInput = document.getElementById("linkTelegram");
+const linkInstagram1Input = document.getElementById("linkInstagram1");
+const linkInstagram2Input = document.getElementById("linkInstagram2");
 
 
 
@@ -381,6 +384,9 @@ pagoCedulaInput.value = data.pagoCedula ?? "";
   imagenHeroInput.value = data.imagenHero;
   actualizarPreview(data.imagenHero);
 }
+linkTelegramInput.value = data.linkTelegram ?? "";
+linkInstagram1Input.value = data.linkInstagram1 ?? "";
+linkInstagram2Input.value = data.linkInstagram2 ?? "";
 
 
   } else {
@@ -419,7 +425,12 @@ guardarBtn.addEventListener("click", async () => {
     pagoBanco: pagoBanco,
     pagoTelefono: pagoTelefono,
     pagoCedula: pagoCedula,
-    imagenHero: imagenHero
+    imagenHero: imagenHero,
+    linkTelegram: linkTelegramInput.value.trim(),
+linkInstagram1: linkInstagram1Input.value.trim(),
+linkInstagram2: linkInstagram2Input.value.trim(),
+
+
   }, { merge: true });
 
   msg.style.display = "block";
