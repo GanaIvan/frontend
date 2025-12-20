@@ -221,6 +221,15 @@ button.save{
   <section class="card">
     <h2>Parámetros generales</h2>
 
+
+<div class="form-group">
+  <label>Título principal del sitio</label>
+  <input type="text" id="tituloPrincipal" />
+</div>
+
+
+
+    
     <div class="form-group">
       <label>Precio del ticket (Bs)</label>
       <input type="number" id="precioTicket" min="1" />
@@ -261,6 +270,8 @@ import { doc, getDoc, setDoc }
   from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const precioInput = document.getElementById("precioTicket");
+  const tituloInput = document.getElementById("tituloPrincipal");
+
 const guardarBtn = document.getElementById("guardar");
 const msg = document.getElementById("msg");
 
@@ -268,21 +279,36 @@ const ref = doc(db, "config", "general");
 
 async function cargarConfig(){
   const snap = await getDoc(ref);
+
   if (snap.exists()) {
-    precioInput.value = snap.data().precioTicket ?? 219;
+    const data = snap.data();
+
+    precioInput.value = data.precioTicket ?? 219;
+    tituloInput.value = data.tituloPrincipal ?? "";
   } else {
     precioInput.value = 219;
+    tituloInput.value = "";
   }
 }
 
+
 guardarBtn.addEventListener("click", async () => {
   const precio = Number(precioInput.value);
-  if (!precio || precio <= 0) return alert("Precio inválido");
+  const titulo = tituloInput.value.trim();
 
-  await setDoc(ref, { precioTicket: precio });
+  if (!precio || precio <= 0) {
+    return alert("Precio inválido");
+  }
+
+  await setDoc(ref, {
+    precioTicket: precio,
+    tituloPrincipal: titulo
+  }, { merge: true });
+
   msg.style.display = "block";
   setTimeout(() => msg.style.display = "none", 3000);
 });
+
 
 cargarConfig();
 </script>
