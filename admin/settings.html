@@ -311,6 +311,27 @@ button.save{
       <input type="number" id="precioTicket" min="1" />
     </div>
 
+
+
+
+
+<div class="form-group">
+  <label>Descripción del combo</label>
+  <textarea
+    id="comboDescripcion"
+    rows="10"
+    placeholder="Descripción completa del combo..."
+    style="resize:vertical"
+  ></textarea>
+</div>
+
+
+
+
+
+
+
+    
     <button class="save" id="guardar">
       💾 Guardar cambios
     </button>
@@ -355,6 +376,8 @@ const pagoCedulaInput = document.getElementById("pagoCedula");
 const linkTelegramInput = document.getElementById("linkTelegram");
 const linkInstagram1Input = document.getElementById("linkInstagram1");
 const linkInstagram2Input = document.getElementById("linkInstagram2");
+const comboDescripcionInput = document.getElementById("comboDescripcion");
+
 
 
 
@@ -362,7 +385,7 @@ const guardarBtn = document.getElementById("guardar");
 const msg = document.getElementById("msg");
 
 const ref = doc(db, "config", "general");
-
+const comboRef = doc(db, "combos", "combo-millonario");
 
 
 
@@ -412,7 +435,11 @@ guardarBtn.addEventListener("click", async () => {
   const pagoCedula = pagoCedulaInput.value.trim();
 
   const imagenHero = imagenHeroInput.value.trim();
+const descripcionCombo = comboDescripcionInput.value.trim();
 
+await setDoc(comboRef, {
+  descripcion: descripcionCombo
+}, { merge: true });
 
   if (!precio || precio <= 0) {
     return alert("Precio inválido");
