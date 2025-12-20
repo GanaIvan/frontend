@@ -420,7 +420,15 @@ linkInstagram2Input.value = data.linkInstagram2 ?? "";
 }
 
 
+async function cargarDescripcionComboAdmin() {
+  const snap = await getDoc(comboRef);
+  if (!snap.exists()) return;
 
+  const data = snap.data();
+  if (!data.descripcion) return;
+
+  comboDescripcionInput.value = data.descripcion;
+}
 
 
   
@@ -472,6 +480,7 @@ linkInstagram2: linkInstagram2Input.value.trim(),
 
 
 cargarConfig();
+  cargarDescripcionComboAdmin();
 </script>
 
 
