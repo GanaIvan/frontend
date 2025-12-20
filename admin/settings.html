@@ -413,6 +413,46 @@ guardarBtn.addEventListener("click", async () => {
 cargarConfig();
 </script>
 
+
+
+
+
+<!-- PREVIEW IMAGEN -->
+  <script>
+const imagenInput = document.getElementById("imagenHero");
+const previewImg = document.getElementById("imagenHeroPreview");
+const previewError = document.getElementById("imagenHeroError");
+
+function actualizarPreview(url) {
+  if (!url) {
+    previewImg.style.display = "none";
+    previewError.style.display = "none";
+    return;
+  }
+
+  previewImg.src = url;
+  previewImg.style.display = "block";
+
+  previewImg.onload = () => {
+    previewError.style.display = "none";
+  };
+
+  previewImg.onerror = () => {
+    previewImg.style.display = "none";
+    previewError.style.display = "block";
+  };
+}
+
+imagenInput.addEventListener("input", () => {
+  actualizarPreview(imagenInput.value.trim());
+});
+</script>
+
+
+
+
+
+  
 <!-- MENU MOBILE -->
 <script>
 const menuToggle = document.getElementById("menuToggle");
