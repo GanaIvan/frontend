@@ -287,37 +287,6 @@ td.numeros{font-size:12px;color:#e5e7eb}
 
 
 
-<button id="downloadCSV">Descargar CSV</button>
-
-<script type="module">
-import { db } from "../firebase.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-document.getElementById("downloadCSV").addEventListener("click", async () => {
-
-  const snapshot = await getDocs(collection(db, "compras"));
-
-  // Encabezados
-  let csv = "nombre,correo,telefono\n";
-
-  snapshot.forEach(doc => {
-    const d = doc.data();
-
-    csv += `"${d.nombre || ""}","${d.correo || ""}","${d.telefono || ""}"\n`;
-  });
-
-  // Crear y descargar CSV
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "contactos.csv";
-  a.click();
-
-  URL.revokeObjectURL(url);
-});
-</script>
 
 
 
@@ -442,6 +411,7 @@ overlay?.addEventListener("click", () => {
 
 </body>
 </html>
+
 
 
 
