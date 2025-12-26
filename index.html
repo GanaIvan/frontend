@@ -115,7 +115,54 @@ src="https://www.facebook.com/tr?id=1140579284160045&amp;ev=PageView&amp;noscrip
                 </svg>
                                        
               </div>
-              
+
+
+
+
+
+
+
+
+
+
+
+
+<button onclick="descargarCSV()">Descargar CSV</button>
+
+<script type="module">
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { db } from "../firebase.js"; // ajusta SOLO si ya lo usas así en ese archivo
+
+window.descargarCSV = async () => {
+  const snap = await getDocs(collection(db, "tu_coleccion"));
+
+  let csv = "nombre,correo,telefono\n";
+
+  snap.forEach(doc => {
+    const d = doc.data();
+    csv += `"${d.nombre || ""}","${d.correo || ""}","${d.telefono || ""}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "contactos.csv";
+  link.click();
+};
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+				
                 <div class="flex gap-2 items-center">
                   <div>
                    
