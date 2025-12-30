@@ -1970,7 +1970,88 @@ if (window.guardarCompraDesdeHTML) {
 
 
 
+<script type="module">
+import { db } from "./firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
+async function cargarConfigGeneral() {
+  const ref = doc(db, "config", "general");
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) return;
+
+  const data = snap.data();
+
+  // 1. CARGAR PRECIO (¡Esto es lo nuevo!)
+  if (data.precioTicket) {
+    // Actualizamos la variable global para los cálculos
+    window.RifaPrecio = Number(data.precioTicket); // Usamos window para asegurar acceso global
+    
+    // Actualizamos el precio en el Header (si agregaste el ID)
+    const precioHeader = document.getElementById("precioHeader");
+    if(precioHeader) precioHeader.innerText = `Bs. ${data.precioTicket}`;
+
+    // Actualizamos el precio en el Modal de compra (si agregaste el ID)
+    const precioModal = document.getElementById("precioModal");
+    if(precioModal) precioModal.innerText = `Bs. ${data.precioTicket}`;
+
+    // Actualizamos el botón flotante de "Participar"
+    // Simulamos un evento de input para recalcular el total inicial
+    const inputCant = document.getElementById("numBoletosAdd");
+    if(inputCant) {
+        document.getElementById("calculadora").innerText = (inputCant.value * window.RifaPrecio).toLocaleString('es-VE');
+    }
+  }
+
+  // 2. RESTO DE DATOS (Título, Fecha, Bancos...)
+  if (data.tituloPrincipal) {
+    document.getElementById("tituloPrincipal").innerText = data.tituloPrincipal;
+  }
+
+  if (data.fechaEvento) {
+    document.querySelectorAll(".fechaEvento").forEach(el => {
+      el.innerText = data.fechaEvento;
+    });
+  }
+
+  if (data.pagoBanco) {
+    const banco = document.getElementById("pagoBanco");
+    if (banco) banco.innerText = data.pagoBanco;
+  }
+
+  if (data.pagoTelefono) {
+    const tel = document.getElementById("pagoTelefono");
+    if (tel) tel.innerText = data.pagoTelefono;
+  }
+
+  if (data.pagoCedula) {
+    const ced = document.getElementById("pagoCedula");
+    if (ced) ced.innerText = data.pagoCedula;
+  }
+
+  // REDES SOCIALES
+  if (data.linkTelegram) {
+    const tg = document.getElementById("linkTelegram");
+    if (tg) tg.href = data.linkTelegram;
+  }
+  if (data.linkInstagram1) {
+    const ig1 = document.getElementById("linkInstagram1");
+    if (ig1) ig1.href = data.linkInstagram1;
+  }
+  if (data.linkInstagram2) {
+    const ig2 = document.getElementById("linkInstagram2");
+    if (ig2) ig2.href = data.linkInstagram2;
+  }
+
+  // IMAGEN HERO
+  if (data.imagenHero) {
+    const img = document.getElementById("imagenHero");
+    if (img) img.src = data.imagenHero;
+  }
+}
+
+cargarConfigGeneral();
+</script>
 
 
 
