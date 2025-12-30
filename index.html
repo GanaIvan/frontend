@@ -261,7 +261,7 @@ window.descargarCSV = async () => {
       </div>
       <div class="flex flex-col text-left">
         <span class="body-small-regular text-color-secondary">Boleto</span>
-        <span class="body-medium-bold text-color-secondary">Bs. 269,0</span>
+        <span id="precioHeader" class="body-medium-bold text-color-secondary">Bs. 269,0</span>
       </div>
     </div>
   </div>
@@ -328,18 +328,18 @@ window.descargarCSV = async () => {
     <!----------------------------------->
     <!----------------------------------->
       <div class="flex flex-col gap-5 justify-stretch items-stretch w-full ">
-      <div id="btCompra" class="button-active button-medium flex  flex-row h-full rounded-xl p-[5%]">
+    <div id="btCompra" class="button-active button-medium flex flex-row h-full rounded-xl p-[5%] cursor-pointer">
         <div class="flex flex-col font-semibold size text-base">
-        <span>Participar</span>
-          <span>Bs.  <span id="calculadora">269,0</span></span>
+            <span>Participar</span>
+            <span>Bs. <span id="calculadora">269,0</span></span>
         </div>
         <div class="flex flex-col flex-1 h-full">
-          <span class="my-auto ml-auto">
-          <i class="fa-solid fa-arrow-right "></i>
-
-          </span>
+            <span class="my-auto ml-auto">
+                <i class="fa-solid fa-arrow-right "></i>
+            </span>
         </div>
-      </div>
+    </div>
+</div>
   
     </div>
     </div>
@@ -463,7 +463,7 @@ window.descargarCSV = async () => {
           <span class="w-[100px] md:w-1/2 label-medium-medium text-color-secondary">
             Precio por boleto
           </span>
-          <span class="label-medium-regular">
+          <span id="precioModal" class="label-medium-regular">
             Bs. 269,0
           </span>
         </div>
@@ -933,7 +933,8 @@ window.descargarCSV = async () => {
   let RifaMin = parseInt('7')
 
 	
-  let RifaPrecio = 269;
+  // Y CÁMBIALO POR ESTO:
+var RifaPrecio = 269; // Usamos var o window.RifaPrecio para que sea accesible
 
 
 	
@@ -1979,80 +1980,7 @@ if (window.guardarCompraDesdeHTML) {
 
 
 
-<script type="module">
-import { db } from "./firebase.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-async function cargarConfigGeneral() {
-  const ref = doc(db, "config", "general");
-  const snap = await getDoc(ref);
-
-  if (!snap.exists()) return;
-
-  const data = snap.data();
-
-  if (data.tituloPrincipal) {
-    document.getElementById("tituloPrincipal").innerText =
-      data.tituloPrincipal;
-  }
-
-  if (data.fechaEvento) {
-    document.querySelectorAll(".fechaEvento").forEach(el => {
-      el.innerText = data.fechaEvento;
-    });
-  }
-
-
-
- if (data.pagoBanco) {
-    const banco = document.getElementById("pagoBanco");
-    if (banco) banco.innerText = data.pagoBanco;
-  }
-
-  if (data.pagoTelefono) {
-    const tel = document.getElementById("pagoTelefono");
-    if (tel) tel.innerText = data.pagoTelefono;
-  }
-
-  if (data.pagoCedula) {
-    const ced = document.getElementById("pagoCedula");
-    if (ced) ced.innerText = data.pagoCedula;
-  }
-
-
-// TELEGRAM
-if (data.linkTelegram) {
-  const tg = document.getElementById("linkTelegram");
-  if (tg) tg.href = data.linkTelegram;
-}
-
-// INSTAGRAM 1
-if (data.linkInstagram1) {
-  const ig1 = document.getElementById("linkInstagram1");
-  if (ig1) ig1.href = data.linkInstagram1;
-}
-
-// INSTAGRAM 2
-if (data.linkInstagram2) {
-  const ig2 = document.getElementById("linkInstagram2");
-  if (ig2) ig2.href = data.linkInstagram2;
-}
-
-	
-
-// IMAGEN HERO
-if (data.imagenHero) {
-  const img = document.getElementById("imagenHero");
-  if (img) img.src = data.imagenHero;
-}
-
-
-
-	
-}
-
-cargarConfigGeneral();
-</script>
 
 
 
