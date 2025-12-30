@@ -2062,7 +2062,55 @@ cargarConfigGeneral();
 
 
 
+ if (data.pagoBanco) {
+    const banco = document.getElementById("pagoBanco");
+    if (banco) banco.innerText = data.pagoBanco;
+  }
 
+  if (data.pagoTelefono) {
+    const tel = document.getElementById("pagoTelefono");
+    if (tel) tel.innerText = data.pagoTelefono;
+  }
+
+  if (data.pagoCedula) {
+    const ced = document.getElementById("pagoCedula");
+    if (ced) ced.innerText = data.pagoCedula;
+  }
+
+
+// TELEGRAM
+if (data.linkTelegram) {
+  const tg = document.getElementById("linkTelegram");
+  if (tg) tg.href = data.linkTelegram;
+}
+
+// INSTAGRAM 1
+if (data.linkInstagram1) {
+  const ig1 = document.getElementById("linkInstagram1");
+  if (ig1) ig1.href = data.linkInstagram1;
+}
+
+// INSTAGRAM 2
+if (data.linkInstagram2) {
+  const ig2 = document.getElementById("linkInstagram2");
+  if (ig2) ig2.href = data.linkInstagram2;
+}
+
+	
+
+// IMAGEN HERO
+if (data.imagenHero) {
+  const img = document.getElementById("imagenHero");
+  if (img) img.src = data.imagenHero;
+}
+
+
+
+	
+}
+
+cargarConfigGeneral();
+</script>
 
 
 
